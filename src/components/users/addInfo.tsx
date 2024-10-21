@@ -67,7 +67,7 @@ const AddInfo = () => {
     };
 
     fetchData();
-  },[]);
+  }, []);
 
   const checkUserStatus = async (userId: string) => {
     const response = await fetch(
@@ -131,23 +131,24 @@ const AddInfo = () => {
       } else {
         toast.error("Failed to fetch user info");
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("An error occurred while fetching user info");
     }
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-
+  
     if (name === "weight") {
       setFormData({ ...formData, [name]: Number(value) });
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
+  
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
@@ -245,25 +246,21 @@ const AddInfo = () => {
             )}
           </div>
 
+          <label htmlFor="bloodType">Blood Type</label>
           <select
+            id="bloodType"
             name="bloodType"
             value={formData.bloodType}
             onChange={handleBloodGroupChange}
-            className={`w-full p-3 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${
-              errors?.formErrors?.fieldErrors.bloodType
-                ? "border border-red-500"
-                : ""
-            }`}
+            title="Select your blood group"
           >
-            <option value="" disabled>
-              Select Blood Group
-            </option>
-            {bloodType.map((group) => (
-              <option key={group} value={group}>
-                {group}
+            {bloodType.map((type) => (
+              <option key={type} value={type}>
+                {type}
               </option>
             ))}
           </select>
+
           {errors?.formErrors?.fieldErrors.bloodType && (
             <span className="text-red-500">
               {errors.formErrors.fieldErrors.bloodType}
@@ -289,6 +286,7 @@ const AddInfo = () => {
           )}
 
           <div className="flex space-x-4">
+            
             <select
               name="gender"
               value={formData.gender}
@@ -298,6 +296,7 @@ const AddInfo = () => {
                   ? "border border-red-500"
                   : ""
               }`}
+              title="gender"
             >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -418,6 +417,7 @@ const AddInfo = () => {
               checked={formData.donatedPreviously}
               onChange={handleCheckboxChange}
               className="mr-2"
+              title="donatedPreviously"
             />
             <label>Previously Donated?</label>
           </div>
